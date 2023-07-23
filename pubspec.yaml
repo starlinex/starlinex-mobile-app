@@ -1,0 +1,41 @@
+name: starlinex_courier
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.3 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  get: ^4.6.5
+  flutter_screenutil: ^5.7.0
+  otp_text_field: ^1.1.3
+  dropdown_search: ^5.0.6
+  http: ^0.13.6
+  get_it: ^7.6.0
+  modal_progress_hud_nsn: ^0.3.0
+  hive: ^2.2.3
+  path_provider: ^2.0.15
+  country_picker: ^2.0.20
+  intl: ^0.18.1
+  image_picker: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  assets:
+    - assets/images/
+
+  uses-material-design: true
+
