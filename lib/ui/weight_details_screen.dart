@@ -10,6 +10,7 @@ import '../app/utils/app_routes.dart';
 import '../components/button_widget.dart';
 
 class WeightDetailsScreen extends StatefulWidget {
+
   const WeightDetailsScreen({Key? key}) : super(key: key);
 
   @override
@@ -157,9 +158,7 @@ class _WeightDetailsScreenState extends State<WeightDetailsScreen> {
                                                   actualWeight-=int.parse(weightList[index].actualWeight);
                                                   volumetricWeight-=double.parse(weightList[index].volumetricWeight);
                                                   weightList.removeAt(index);
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: const Icon(Icons.cancel,color: Colors.red,))
                                           ],

@@ -12,6 +12,7 @@ class LoginRegisterController extends GetxController {
   var phone = Rxn();
   var password = Rxn();
   var userId = Rxn();
+  var otp = Rxn();
   var mLoading = false.obs;
 
   Future<ApiResponse<RegisterModel>> emailLogin() async {
@@ -53,8 +54,9 @@ class LoginRegisterController extends GetxController {
   Future<ApiResponse<RegisterModel>> resetPassword(
       ) async {
     var request = LoginRegisterRequest(
-        otp: '',
-        password: ''
+        userId: userId.value,
+        otp: otp.value,
+        password: password.value
     );
     var response = await locator<AppRepository>().resetPassword(request);
     if (response.isSuccess()) {
@@ -67,9 +69,7 @@ class LoginRegisterController extends GetxController {
   Future<ApiResponse<RegisterModel>> forgetPassword(
       ) async {
     var request = LoginRegisterRequest(
-        otp: '',
-        userId:'',
-        password: ''
+        email: email.value
     );
     var response = await locator<AppRepository>().forgotPassword(request);
     if (response.isSuccess()) {

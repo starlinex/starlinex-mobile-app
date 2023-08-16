@@ -4,10 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:starlinex_courier/app/utils/app_colors.dart';
 import 'package:starlinex_courier/components/app_bar_widget.dart';
+import 'package:starlinex_courier/components/loading_view.dart';
 import 'package:starlinex_courier/controllers/add_awb_controller.dart';
 import '../app/utils/app_routes.dart';
 import '../components/button_widget.dart';
 import '../components/text_field_widget.dart';
+import '../network/api/models/service_list_model.dart';
 
 class AddAwbScreen extends StatefulWidget {
   const AddAwbScreen({Key? key}) : super(key: key);
@@ -150,26 +152,39 @@ class _AddAwbScreenState extends State<AddAwbScreen> {
                           inputType: TextInputType.text,
                         )),
                         SizedBox(height: 27.h),
-                        DropdownSearch<String>(
-                          popupProps: const PopupProps.menu(
-                            showSearchBox: true,
-                            showSelectedItems: true,
-                          ),
-                          items: ["V-Puro Paid",'T-Puro Paid'],
-                          dropdownDecoratorProps: DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                borderSide: BorderSide(width: 2, color: Colors.grey.withOpacity(0.4)),
-                              ),
-                              labelText: "Service",
-                              hintText: "Choose Service",
-                            ),
-                          ),
-                          onChanged: (value){
-                            controller.service.value=value.toString();
-                          },
-                          selectedItem: "V-Puro Paid",
+                        GetBuilder<AddAwbController>(
+                          builder: (awbController) {
+                            List<ServiceListData> data;
+                            List<String> listServices=[];
+                            if(awbController.serviceListData==null){
+                              return const LoadingView();
+                            }else{
+                              data=awbController.serviceListData!.data().response!;
+                              data.map((e) => listServices.add(e.countryDesc.toString())).toList();
+                              controller.service.value=data[0].countryDesc.toString();
+                              return DropdownSearch<String>(
+                                popupProps: const PopupProps.menu(
+                                  showSearchBox: true,
+                                  showSelectedItems: true,
+                                ),
+                                items: listServices,
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                      borderSide: BorderSide(width: 2, color: Colors.grey.withOpacity(0.4)),
+                                    ),
+                                    labelText: "Service",
+                                    hintText: "Choose Service",
+                                  ),
+                                ),
+                                onChanged: (value){
+                                  controller.service.value=value.toString();
+                                },
+                                selectedItem:data[0].countryDesc,
+                              );
+                            }
+                          }
                         ),
                         SizedBox(height: 27.h),
                         Text(

@@ -10,6 +10,7 @@ import 'package:starlinex_courier/ui/forgot_password_dialog.dart';
 import '../app/utils/app_toast.dart';
 import '../components/button_widget.dart';
 import '../components/text_field_widget.dart';
+import '../data/arguments/register_args.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
 
@@ -23,9 +24,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   final controller = Get.put(LoginRegisterController());
   final GlobalKey<FormState> formKey=GlobalKey();
+  late RegisterArgs registerArgs;
+
 
   @override
   void initState() {
+    registerArgs = Get.arguments;
+    controller.userId.value=registerArgs.userId.toString();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppToast.showMessage('Your Otp is ${registerArgs.otp.toString()}');
+    });
     super.initState();
   }
 
@@ -57,7 +65,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             if (value!.isEmpty) {
                               return 'Enter OTP';
                             } else {
-                              controller.email.value = value;
+                              controller.otp.value = value;
                             }
                           },
                           title: 'Enter OTP',

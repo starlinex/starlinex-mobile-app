@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:starlinex_courier/app/utils/app_colors.dart';
 import 'package:starlinex_courier/app/utils/app_preference.dart';
 import 'package:starlinex_courier/app/utils/app_routes.dart';
 import 'package:starlinex_courier/components/app_bar_widget.dart';
-import 'package:starlinex_courier/ui/forgot_password_dialog.dart';
 import '../components/button_widget.dart';
-import '../components/text_field_widget.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -51,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ButtonWidget(
                   title: 'Booking History',
                   onPressed: () {
-                    Get.toNamed(AppRoutes.register);
+                    // Get.toNamed(AppRoutes.register);
                   },
                 ),
                 SizedBox(height: 30.h),

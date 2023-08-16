@@ -130,7 +130,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   void verifyOtp(String pin) {
-    print('iojiofj${controller.userId.value} ${pin}');
     controller.verifyOtp(pin,controller.userId.value).then((response){
       if(response.isSuccess()){
         AppPreference.setString(AppStrings.authToken, response.data().response?.accessToken.toString());

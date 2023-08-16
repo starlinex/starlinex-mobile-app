@@ -24,8 +24,4 @@ class AddWeightController extends GetxController{
         hcm: hcm.toString(),
         volumetricWeight: volumetricWeight.toString());
   }
-
-
-
-
 }

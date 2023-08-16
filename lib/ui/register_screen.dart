@@ -7,8 +7,6 @@ import 'package:starlinex_courier/app/utils/app_colors.dart';
 import 'package:starlinex_courier/app/utils/app_routes.dart';
 import 'package:starlinex_courier/components/app_bar_widget.dart';
 import 'package:starlinex_courier/data/arguments/register_args.dart';
-import '../app/utils/app_preference.dart';
-import '../app/utils/app_strings.dart';
 import '../app/utils/app_toast.dart';
 import '../components/button_widget.dart';
 import '../components/text_field_widget.dart';
@@ -165,8 +163,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller.mLoading.value = true;
       controller.register().then((response) {
         if (response.isSuccess()) {
-          // AppPreference.setString(AppStrings.authToken, response.data().response?.accessToken.toString());
-          // AppPreference.setString(AppStrings.userId, response.data().response?.id.toString());
           controller.mLoading.value = false;
           var args = RegisterArgs(
               userId: response.data().response?.id.toString(),

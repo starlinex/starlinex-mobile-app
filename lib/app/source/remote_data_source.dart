@@ -1,4 +1,7 @@
 import 'package:starlinex_courier/app/source/app_data_source.dart';
+import 'package:starlinex_courier/network/api/models/service_list_model.dart';
+import 'package:starlinex_courier/network/api/models/shipment_item_model.dart';
+import 'package:starlinex_courier/network/api/requests/common_request.dart';
 import '../../network/api/api_response.dart';
 import '../../network/api/api_urls.dart';
 import '../../network/api/models/register_model.dart';
@@ -15,8 +18,6 @@ class RemoteDataSource extends AppDataSource{
       var json={
         "email":request.email,
         "password":request.password,
-        "device_type":request.deviceType,
-        "fcm_token":request.fcmToken,
       };
       var response = await networkApiProvider.postApiResponse(
           ApiUrls.login,json
@@ -108,6 +109,39 @@ class RemoteDataSource extends AppDataSource{
           ApiUrls.forgetPassword,json
       );
       final model = RegisterModel.fromJson(response);
+      if (model.responseCode == 200) {
+        return ApiResponse.success(model);
+      } else {
+        return ApiResponse.error(model.message ?? 'Something went wrong');
+      }
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  @override
+  Future<ApiResponse<ServiceListModel>> getServices() async {
+    try {
+      var response = await networkApiProvider.getApiResponse(
+          ApiUrls.services
+      );
+      final model = ServiceListModel.fromJson(response);
+      if (model.responseCode == 200) {
+        return ApiResponse.success(model);
+      } else {
+        return ApiResponse.error(model.message ?? 'Something went wrong');
+      }
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  @override
+  Future<ApiResponse<ShipmentItemModel>> searchShipmentItem(CommonRequest request) async {
+    try {
+      var response = await networkApiProvider.getApiResponse(
+          '${ApiUrls.searchShipmentItem}=${request.search}');
+      final model = ShipmentItemModel.fromJson(response);
       if (model.responseCode == 200) {
         return ApiResponse.success(model);
       } else {

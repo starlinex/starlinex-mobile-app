@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:starlinex_courier/ui/add_awb_screen.dart';
 import 'package:starlinex_courier/ui/add_shipment_item_screen.dart';
+import 'package:starlinex_courier/ui/add_special_service_screen.dart';
 import 'package:starlinex_courier/ui/add_weight_screen.dart';
 import 'package:starlinex_courier/ui/home_screen.dart';
 import 'package:starlinex_courier/ui/login_screen.dart';
@@ -32,6 +33,7 @@ class AppRoutes{
   static String shipmentInvoice='/shipmentInvoice';
   static String shipmentInvoiceItems='/shipmentInvoiceItems';
   static String addShipmentItem='/addShipmentItem';
+  static String addSpecialServiceScreen='/addSpecialServiceScreen';
 }
 
 final getPages=[
@@ -49,5 +51,6 @@ final getPages=[
   GetPage(name: AppRoutes.shipmentInvoice,page:()=>const ShipmentInvoiceScreen()),
   GetPage(name: AppRoutes.shipmentInvoiceItems,page:()=>const ShipmentInvoiceItemsScreen()),
   GetPage(name: AppRoutes.addWeight,page:()=>const AddWeightScreen()),
-  GetPage(name: AppRoutes.addShipmentItem,page:()=>const AddShipmentItemScreen())
+  GetPage(name: AppRoutes.addShipmentItem,page:()=>const AddShipmentItemScreen()),
+  GetPage(name: AppRoutes.addSpecialServiceScreen,page:()=>const AddSpecialServiceScreen())
 ];

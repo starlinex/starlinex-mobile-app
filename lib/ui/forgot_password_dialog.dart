@@ -7,6 +7,7 @@ import '../app/utils/app_toast.dart';
 import '../components/button_widget.dart';
 import '../components/text_field_widget.dart';
 import '../controllers/login_register_controller.dart';
+import '../data/arguments/register_args.dart';
 
 class ForgotPasswordDialog extends StatelessWidget {
   ForgotPasswordDialog({Key? key}) : super(key: key);
@@ -65,6 +66,9 @@ class ForgotPasswordDialog extends StatelessWidget {
                                 controller.email.value = value;
                               }
                             },
+                            onChanged: (value){
+                              controller.email.value = value;
+                            },
                             title: 'Email',
                             inputType: TextInputType.emailAddress,
                           ),
@@ -77,7 +81,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                       child: ButtonWidget(
                           title: 'Submit',
                           onPressed: () {
-                            Get.toNamed(AppRoutes.resetPassword);
+                            forgetPassword();
                           }),
                     ),
                   ],
@@ -92,10 +96,14 @@ class ForgotPasswordDialog extends StatelessWidget {
 
 
   void forgetPassword() {
+    print('EMial=>${controller.email.value}');
     if (_formKey.currentState!.validate()) {
       controller.forgetPassword().then((response) {
         if (response.isSuccess()) {
-          Get.toNamed(AppRoutes.resetPassword);
+          var args = RegisterArgs(
+              userId: response.data().response?.id.toString(),
+              otp: response.data().response?.otp.toString());
+          Get.toNamed(AppRoutes.resetPassword,arguments: args);
         } else {
           AppToast.showMessage(response.error());
         }

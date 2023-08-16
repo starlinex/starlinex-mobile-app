@@ -1,4 +1,4 @@
-import 'package:dropdown_search/dropdown_search.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,8 +8,10 @@ import 'package:starlinex_courier/controllers/special_service_controller.dart';
 import '../app/utils/app_colors.dart';
 import '../app/utils/app_routes.dart';
 import '../components/button_widget.dart';
+import '../data/arguments/special_service_args.dart';
 
 class SpecialServiceScreen extends StatefulWidget {
+
   const SpecialServiceScreen({Key? key}) : super(key: key);
 
   @override
@@ -17,14 +19,13 @@ class SpecialServiceScreen extends StatefulWidget {
 }
 
 class _SpecialServiceScreenState extends State<SpecialServiceScreen> {
-
-  var controller=Get.put(SpecialServiceController());
-
+  var controller = Get.put(SpecialServiceController());
+  late List<SpecialServiceArgs> serviceList = [];
 
   @override
   void initState() {
     super.initState();
-   }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class _SpecialServiceScreenState extends State<SpecialServiceScreen> {
               )),
           body: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 40.h,horizontal: 20.h),
+              padding: EdgeInsets.symmetric(vertical: 40.h, horizontal: 20.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -63,23 +64,37 @@ class _SpecialServiceScreenState extends State<SpecialServiceScreen> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
-                            controller.addList();
+                          onTap: () async {
+                            var navResponse = await Get.toNamed(
+                                AppRoutes.addSpecialServiceScreen);
+                            if (navResponse != null) {
+                              serviceList.add(navResponse);
+                              setState(() {});
+                              String jsonTags = jsonEncode(serviceList);
+                              print("ServiceList===>$jsonTags ");
+                            }
                           },
                           child: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.symmetric(horizontal: 60.w),
                             height: 40.h,
-                            padding: EdgeInsets.only(left: 15.w,top: 10.h,bottom: 10.h,right: 15.w),
+                            padding: EdgeInsets.only(
+                                left: 15.w,
+                                top: 10.h,
+                                bottom: 10.h,
+                                right: 15.w),
                             decoration: BoxDecoration(
                                 color: Colors.lightGreen,
-                                borderRadius: BorderRadius.circular(10.r)
-                            ),
+                                borderRadius: BorderRadius.circular(10.r)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.add_circle_outlined,size: 20,color: Colors.white,),
+                                const Icon(
+                                  Icons.add_circle_outlined,
+                                  size: 20,
+                                  color: Colors.white,
+                                ),
                                 SizedBox(width: 10.w),
                                 Text(
                                   'Add Special Charge'.toUpperCase(),
@@ -93,90 +108,79 @@ class _SpecialServiceScreenState extends State<SpecialServiceScreen> {
                           ),
                         ),
                         SizedBox(height: 30.h),
-                        Obx(() =>
-                            ListView.builder(
+                        ListView.builder(
                             padding: EdgeInsets.zero,
                             physics: const ClampingScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: controller.serviceList.length,
-                            itemBuilder: (context,index){
-                              return
-                                Container(
-                                  key: ObjectKey(index.toString()),
-                                  margin: EdgeInsets.only(bottom: 20.h),
-                                  padding: EdgeInsets.only(left: 15.w,top: 15.h,bottom: 15.h,right: 5.w),
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(10.r)
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex:9,
-                                        child: Column(
+                            itemCount: serviceList.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: EdgeInsets.all(15.r),
+                                margin: EdgeInsets.only(bottom: 15.h),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(10.r)),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
                                           children: [
-                                            DropdownSearch<String>(
-                                              popupProps: const PopupProps.menu(
-                                                showSearchBox: false,
-                                                showSelectedItems: true,
-                                              ),
-                                              items: controller.serviceItemsList,
-                                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                                dropdownSearchDecoration: InputDecoration(
-                                                  enabledBorder: OutlineInputBorder(
-                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                                    borderSide: BorderSide(width: 2, color: Colors.grey.withOpacity(0.4)),
-                                                  ),
-                                                  labelText: "Name",
-                                                  hintText: "Choose Name",
-                                                ),
-                                              ),
-                                              onChanged: print,
-                                              selectedItem: "Food Items",
+                                            Text(
+                                              'Name :',
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black),
                                             ),
-                                            SizedBox(height: 27.h),
-                                            DropdownSearch<String>(
-                                              popupProps: const PopupProps.menu(
-                                                showSearchBox: false,
-                                                showSelectedItems: true,
-                                              ),
-                                              items: ["1",'2',"3",'4',"5"],
-                                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                                dropdownSearchDecoration: InputDecoration(
-                                                  enabledBorder: OutlineInputBorder(
-                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                                    borderSide: BorderSide(width: 2, color: Colors.grey.withOpacity(0.4)),
-                                                  ),
-                                                  labelText: "PCS",
-                                                  hintText: "Choose PCS",
-                                                ),
-                                              ),
-                                              onChanged: print,
-                                              selectedItem: "1",
+                                            SizedBox(width: 10.w),
+                                            Text(
+                                              serviceList[index].name,
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Expanded(
-                                          flex: 1,
-                                          child: GestureDetector(
-                                            onTap: (){
-                                              controller.serviceList.removeAt(index);
-                                              controller.serviceList.refresh();
+                                        GestureDetector(
+                                            onTap: () {
+                                              serviceList.removeAt(index);
+                                              setState(() {});
                                             },
-                                            child: Container(
-                                                padding: EdgeInsets.all(2.r),
-                                                decoration: const BoxDecoration(
-                                                    color: Colors.red,
-                                                    shape: BoxShape.circle
-                                                ),
-                                                child: const Icon(Icons.close,size: 20,color: Colors.white,)),
-                                          ))
-                                    ],
-                                  ),
-                                );
-                            }))
+                                            child: const Icon(
+                                              Icons.cancel,
+                                              color: Colors.red,
+                                            ))
+                                      ],
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Pcs :',
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        ),
+                                        SizedBox(width: 20.w),
+                                        Text(
+                                          serviceList[index].pcs,
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10.h),
+                                  ],
+                                ),
+                              );
+                            })
                       ],
                     ),
                   ),
@@ -192,10 +196,10 @@ class _SpecialServiceScreenState extends State<SpecialServiceScreen> {
                   ButtonWidget(
                     title: 'Next',
                     onPressed: () {
-                      if(controller.serviceList.isEmpty){
+                      if (serviceList.isEmpty) {
                         AppToast.showMessage('Please add service');
-                      }else{
-                      Get.toNamed(AppRoutes.shipmentInvoice);
+                      } else {
+                        Get.toNamed(AppRoutes.shipmentInvoice);
                       }
                     },
                   ),
@@ -206,6 +210,4 @@ class _SpecialServiceScreenState extends State<SpecialServiceScreen> {
           )),
     );
   }
-
 }
-

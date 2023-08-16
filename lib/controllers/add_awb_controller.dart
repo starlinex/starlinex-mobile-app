@@ -6,6 +6,11 @@ import 'package:get/get.dart';
 import 'package:starlinex_courier/app/utils/app_toast.dart';
 import 'package:starlinex_courier/data/arguments/air_waybill_args.dart';
 import 'package:intl/intl.dart';
+import 'package:starlinex_courier/network/api/models/service_list_model.dart';
+
+import '../app/app_repository.dart';
+import '../network/api/api_response.dart';
+import '../network/provider/service_locator.dart';
 
 class AddAwbController extends GetxController {
 
@@ -21,11 +26,13 @@ class AddAwbController extends GetxController {
   var invoiceNo = ''.obs;
   var content = ''.obs;
   var args = Rxn();
+  ApiResponse<ServiceListModel>? serviceListData;
 
 
   @override
   void onInit() {
     getUuid();
+    getServiceList();
     super.onInit();
   }
 
@@ -87,5 +94,15 @@ class AddAwbController extends GetxController {
     ).toJson();
   }
 
+  Future<ApiResponse<ServiceListModel>?> getServiceList() async {
+    var response=await locator<AppRepository>().getServices();
+    if(response.isSuccess()){
+      serviceListData= ApiResponse.success(response.data());
+    }else{
+      serviceListData= ApiResponse.error(response.error());
+    }
+    update();
+    return null;
+  }
 
 }

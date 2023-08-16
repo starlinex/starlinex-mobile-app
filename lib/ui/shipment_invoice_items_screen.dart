@@ -386,7 +386,7 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                           if(itemsList.isEmpty){
                             AppToast.showMessage('Please add item');
                           }else{
-                            // Get.toNamed(AppRoutes.receiverDetails);
+                            Get.offAllNamed(AppRoutes.home);
                           }
                         },
                       ),
