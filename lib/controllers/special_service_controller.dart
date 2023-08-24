@@ -8,6 +8,8 @@ class SpecialServiceController extends GetxController{
   var pcs='1'.obs;
   var serviceItemsList=
   ["ARTIFICIAL JEWELLERY",'ELECTRONIC ITEMS','FOOD ITEMS','COSMETIC ITEMS','SIGNATURE REQUIRED','SPECIAL HANDLING'];
+  var serviceList=[].obs;
+
 
   void saveArgs(){
     args.value = SpecialServiceArgs(

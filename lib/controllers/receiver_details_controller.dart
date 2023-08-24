@@ -47,6 +47,7 @@ class ReceiverDetailsController extends GetxController {
         state: state.value,
         country: countryValue.value,
         phone: countryCode+phone.value,
+        phone2: countryCode+phone2.value,
         email: email.value,
     ).toJson();
   }

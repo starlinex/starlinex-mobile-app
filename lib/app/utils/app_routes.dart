@@ -3,6 +3,8 @@ import 'package:starlinex_courier/ui/add_awb_screen.dart';
 import 'package:starlinex_courier/ui/add_shipment_item_screen.dart';
 import 'package:starlinex_courier/ui/add_special_service_screen.dart';
 import 'package:starlinex_courier/ui/add_weight_screen.dart';
+import 'package:starlinex_courier/ui/booking_details_screen.dart';
+import 'package:starlinex_courier/ui/booking_history_screen.dart';
 import 'package:starlinex_courier/ui/home_screen.dart';
 import 'package:starlinex_courier/ui/login_screen.dart';
 import 'package:starlinex_courier/ui/otp_verification_screen.dart';
@@ -34,6 +36,8 @@ class AppRoutes{
   static String shipmentInvoiceItems='/shipmentInvoiceItems';
   static String addShipmentItem='/addShipmentItem';
   static String addSpecialServiceScreen='/addSpecialServiceScreen';
+  static String bookingHistory='/bookingHistory';
+  static String bookingDetails='/bookingDetails';
 }
 
 final getPages=[
@@ -52,5 +56,7 @@ final getPages=[
   GetPage(name: AppRoutes.shipmentInvoiceItems,page:()=>const ShipmentInvoiceItemsScreen()),
   GetPage(name: AppRoutes.addWeight,page:()=>const AddWeightScreen()),
   GetPage(name: AppRoutes.addShipmentItem,page:()=>const AddShipmentItemScreen()),
-  GetPage(name: AppRoutes.addSpecialServiceScreen,page:()=>const AddSpecialServiceScreen())
+  GetPage(name: AppRoutes.addSpecialServiceScreen,page:()=>const AddSpecialServiceScreen()),
+  GetPage(name: AppRoutes.bookingHistory,page:()=>const BookingHistoryScreen()),
+  GetPage(name: AppRoutes.bookingDetails,page:()=>const BookingDetailsScreen())
 ];

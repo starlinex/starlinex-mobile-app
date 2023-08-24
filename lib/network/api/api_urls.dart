@@ -11,4 +11,7 @@ class ApiUrls {
   static const resetPassword = 'auth/resetPassword';
   static const services = 'dropDown/getCountryData';
   static const searchShipmentItem = 'hsnDetails/search?keyWord';
+  static const storeAirwayInfo = 'airWay/storeAirWayBill';
+  static const bookingHistory = 'airWay/getAllData';
+
 }

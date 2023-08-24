@@ -200,7 +200,7 @@ class _AddAwbScreenState extends State<AddAwbScreen> {
                             Expanded(
                               child: RadioListTile(
                                 title: const Text("Yes"),
-                                value: "yes",
+                                value: "true",
                                 activeColor: AppColors.themeColorOrange,
                                 groupValue: controller.insurance.value,
                                 onChanged: (value){
@@ -211,7 +211,7 @@ class _AddAwbScreenState extends State<AddAwbScreen> {
                             Expanded(
                               child: RadioListTile(
                                 title: const Text("No"),
-                                value: "no",
+                                value: "false",
                                 activeColor: AppColors.themeColorOrange,
                                 groupValue: controller.insurance.value,
                                 onChanged: (value){
@@ -222,7 +222,7 @@ class _AddAwbScreenState extends State<AddAwbScreen> {
                           ],
                         )),
                         SizedBox(height: 10.h),
-                        Obx(() => controller.insurance.value=='yes'?Column(
+                        Obx(() => controller.insurance.value=='true'?Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(

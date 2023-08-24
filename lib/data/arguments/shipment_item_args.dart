@@ -22,14 +22,14 @@ class ShipmentItemArgs {
       });
 
   Map toJson() => {
-    'box_no': boxNo,
-    'description': description,
-    'hs_code': hsCode,
-    'unit_type': unitType,
-    'quantity': quantity,
-    'unit_weight': unitWeight,
-    'igst': igst,
-    'unit_rates': unitRates,
-    'amount': amount,
+    'shipmentBoxNo': boxNo,
+    'shipmentDescription': description,
+    'shipmentHsCode': hsCode,
+    'shipmentUnityType': unitType,
+    'shipmentQuantity': quantity,
+    'shipmentUnitWeight': unitWeight,
+    'shipmentIgst': igst,
+    'shipmentUnitRates': unitRates,
+    'shipmentAmount': amount,
   };
 }

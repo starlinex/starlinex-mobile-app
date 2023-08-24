@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import '../app/app_repository.dart';
 import '../network/api/api_response.dart';
 import '../network/api/models/register_model.dart';
+import '../network/api/models/reset_password_model.dart';
 import '../network/api/requests/login_register_request.dart';
 import '../network/provider/service_locator.dart';
 
@@ -51,7 +52,7 @@ class LoginRegisterController extends GetxController {
     }
   }
 
-  Future<ApiResponse<RegisterModel>> resetPassword(
+  Future<ApiResponse<ResetPasswordModel>> resetPassword(
       ) async {
     var request = LoginRegisterRequest(
         userId: userId.value,

@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ButtonWidget(
                   title: 'Booking History',
                   onPressed: () {
-                    // Get.toNamed(AppRoutes.register);
+                    Get.toNamed(AppRoutes.bookingHistory);
                   },
                 ),
                 SizedBox(height: 30.h),

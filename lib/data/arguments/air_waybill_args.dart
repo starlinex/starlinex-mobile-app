@@ -1,16 +1,16 @@
 class AirWayBillArgs {
 
-  String awbNo;
-  String destination;
-  String product;
-  String bookingDate;
-  String service;
-  String insurance;
-  String insuranceAmount;
-  String insuranceValue;
-  String invoiceDate;
-  String invoiceNo;
-  String content;
+  late String awbNo;
+  late String destination;
+  late String product;
+  late String bookingDate;
+  late String service;
+  late String insurance;
+  late String insuranceAmount;
+  late String insuranceValue;
+  late String invoiceDate;
+  late String invoiceNo;
+  late String content;
 
   AirWayBillArgs(
       {required this.awbNo,
@@ -26,7 +26,21 @@ class AirWayBillArgs {
         required this.content
       });
 
-  Map toJson() => {
+  AirWayBillArgs.fromJson(Map<String, dynamic> json)
+      :
+        awbNo = json['awb_no'],
+        destination = json['destination'],
+        product = json['product'],
+        bookingDate = json['booking_date'],
+        service = json['service'],
+        insurance = json['insurance'],
+        insuranceAmount = json['insurance_amount'],
+        insuranceValue = json['insurance_value'],
+        invoiceDate = json['invoice_date'],
+        invoiceNo = json['invoice_no'],
+        content = json['content'];
+
+  Map<String,dynamic> toJson() => {
     'awb_no': awbNo,
     'destination': destination,
     'product': product,
@@ -39,4 +53,5 @@ class AirWayBillArgs {
     'invoice_no': invoiceNo,
     'content': content,
   };
+
 }

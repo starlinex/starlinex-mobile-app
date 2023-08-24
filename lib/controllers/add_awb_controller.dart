@@ -21,7 +21,7 @@ class AddAwbController extends GetxController {
   var bookingDate = ''.obs;
   var invoiceDate = ''.obs;
   var service = ''.obs;
-  var insurance = 'no'.obs;
+  var insurance = 'false'.obs;
   var insuranceAmount = ''.obs;
   var invoiceNo = ''.obs;
   var content = ''.obs;
@@ -67,7 +67,7 @@ class AddAwbController extends GetxController {
         firstDate: DateTime.now(), //- not to allow to choose before today.
         lastDate: DateTime(2100));
     if (pickedDate != null) {
-      String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       if (type == "booking") {
         bookingDate.value = formattedDate;
       } else if (type == "invoice") {

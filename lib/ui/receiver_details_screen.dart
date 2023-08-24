@@ -241,7 +241,7 @@ class _ReceiverDetailsScreenState extends State<ReceiverDetailsScreen> {
                             controller.city.value = value;
                           },
                           title: 'Enter City',
-                          inputType: TextInputType.number,
+                          inputType: TextInputType.text,
                         ),
                         SizedBox(height: 27.h),
                         Text(

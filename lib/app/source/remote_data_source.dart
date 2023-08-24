@@ -1,10 +1,14 @@
 import 'package:starlinex_courier/app/source/app_data_source.dart';
+import 'package:starlinex_courier/network/api/models/booking_history_model.dart';
 import 'package:starlinex_courier/network/api/models/service_list_model.dart';
 import 'package:starlinex_courier/network/api/models/shipment_item_model.dart';
+import 'package:starlinex_courier/network/api/models/store_airway_info_model.dart';
+import 'package:starlinex_courier/network/api/requests/airway_info_request.dart';
 import 'package:starlinex_courier/network/api/requests/common_request.dart';
 import '../../network/api/api_response.dart';
 import '../../network/api/api_urls.dart';
 import '../../network/api/models/register_model.dart';
+import '../../network/api/models/reset_password_model.dart';
 import '../../network/api/requests/login_register_request.dart';
 import '../../network/provider/network_api_provider.dart';
 
@@ -78,7 +82,7 @@ class RemoteDataSource extends AppDataSource{
   }
 
   @override
-  Future<ApiResponse<RegisterModel>> resetPassword(LoginRegisterRequest request) async {
+  Future<ApiResponse<ResetPasswordModel>> resetPassword(LoginRegisterRequest request) async {
     try {
       var json={
         "otp":request.otp,
@@ -88,7 +92,7 @@ class RemoteDataSource extends AppDataSource{
       var response = await networkApiProvider.postApiResponse(
           ApiUrls.resetPassword,json
       );
-      final model = RegisterModel.fromJson(response);
+      final model = ResetPasswordModel.fromJson(response);
       if (model.responseCode == 200) {
         return ApiResponse.success(model);
       } else {
@@ -142,6 +146,38 @@ class RemoteDataSource extends AppDataSource{
       var response = await networkApiProvider.getApiResponse(
           '${ApiUrls.searchShipmentItem}=${request.search}');
       final model = ShipmentItemModel.fromJson(response);
+      if (model.responseCode == 200) {
+        return ApiResponse.success(model);
+      } else {
+        return ApiResponse.error(model.message ?? 'Something went wrong');
+      }
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  @override
+  Future<ApiResponse<ResetPasswordModel>> storeAirwayInfo(AirwayInfoRequest request) async {
+    try {
+      var response = await networkApiProvider.assetApiResponse(
+          ApiUrls.storeAirwayInfo,request);
+      final model = ResetPasswordModel.fromJson(response);
+      if (model.responseCode == 200) {
+        return ApiResponse.success(model);
+      } else {
+        return ApiResponse.error(model.message ?? 'Something went wrong');
+      }
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  @override
+  Future<ApiResponse<BookingHistoryModel>> bookingHistory(CommonRequest request) async {
+    try {
+      var response = await networkApiProvider.getApiResponse(
+          '${ApiUrls.bookingHistory}/${request.userId}');
+      final model = BookingHistoryModel.fromJson(response);
       if (model.responseCode == 200) {
         return ApiResponse.success(model);
       } else {

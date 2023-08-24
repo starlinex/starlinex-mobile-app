@@ -12,13 +12,17 @@ class AddWeightController extends GetxController{
   var bcmReadOnly=true.obs;
   var volumetricWeight=0.0.obs;
   var args=Rxn();
+  var weightList=[].obs;
+  var totalActualWeight=0.obs;
+  var totalVolumetricWeight=0.0.obs;
 
   void calculateVolumetricWeight(){
     volumetricWeight.value=lcm.value*bcm.value*hcm.value/5000;
   }
 
   void saveArgs(){
-     args.value = WeightArgs(actualWeight: actualWeight.toString(),
+     args.value = WeightArgs(actualWeight:
+     actualWeight.toString(),
         lcm: lcm.toString(),
         bcm: bcm.toString(),
         hcm: hcm.toString(),

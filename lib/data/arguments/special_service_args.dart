@@ -8,7 +8,7 @@ class SpecialServiceArgs {
         });
 
   Map toJson() => {
-    'name': name,
-    'pcs': pcs,
+    'specialServiceName': name,
+    'specialServicePcs': pcs,
   };
 }

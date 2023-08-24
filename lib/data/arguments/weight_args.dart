@@ -13,10 +13,10 @@ class WeightArgs {
       required this.volumetricWeight});
 
   Map toJson() => {
-    'actual_weight': actualWeight,
+    'actualWt': actualWeight,
     'lcm': lcm,
     'bcm': bcm,
     'hcm': hcm,
-    'volumetric_weight': volumetricWeight,
+    'volumetricWt': volumetricWeight,
   };
 }

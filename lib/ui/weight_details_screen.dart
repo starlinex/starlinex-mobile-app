@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:starlinex_courier/app/utils/app_toast.dart';
 import 'package:starlinex_courier/components/app_bar_widget.dart';
+import 'package:starlinex_courier/controllers/add_weight_controller.dart';
 import 'package:starlinex_courier/data/arguments/weight_args.dart';
 import '../app/utils/app_routes.dart';
 import '../components/button_widget.dart';
@@ -20,11 +21,11 @@ class WeightDetailsScreen extends StatefulWidget {
 class _WeightDetailsScreenState extends State<WeightDetailsScreen> {
 
   late List<WeightArgs> weightList = [];
-  int actualWeight=0;
-  double volumetricWeight=0.0;
+  late AddWeightController controller;
 
   @override
   void initState() {
+    controller=Get.put(AddWeightController());
     super.initState();
   }
 
@@ -72,11 +73,11 @@ class _WeightDetailsScreenState extends State<WeightDetailsScreen> {
                                     await Get.toNamed(AppRoutes.addWeight);
                                 if (navResponse != null) {
                                   weightList.add(navResponse);
-                                  actualWeight=0;
-                                  volumetricWeight=0.0;
+                                  controller.totalActualWeight.value=0;
+                                  controller.totalVolumetricWeight.value=0.0;
                                   weightList.forEach((element){
-                                    actualWeight+=int.parse(element.actualWeight);
-                                    volumetricWeight+=double.parse(element.volumetricWeight);
+                                    controller.totalActualWeight.value+=int.parse(element.actualWeight);
+                                    controller.totalVolumetricWeight.value+=double.parse(element.volumetricWeight);
                                   });
                                   setState(() {});
                                   String jsonTags = jsonEncode(weightList);
@@ -155,8 +156,8 @@ class _WeightDetailsScreenState extends State<WeightDetailsScreen> {
                                             ),
                                             GestureDetector(
                                                 onTap: (){
-                                                  actualWeight-=int.parse(weightList[index].actualWeight);
-                                                  volumetricWeight-=double.parse(weightList[index].volumetricWeight);
+                                                  controller.totalActualWeight.value-=int.parse(weightList[index].actualWeight);
+                                                  controller.totalVolumetricWeight.value-=double.parse(weightList[index].volumetricWeight);
                                                   weightList.removeAt(index);
                                                   setState(() {});
                                                 },
@@ -295,7 +296,7 @@ class _WeightDetailsScreenState extends State<WeightDetailsScreen> {
                                 color: Colors.black),
                           ),
                           Text(
-                            actualWeight.toString(),
+                            controller.totalActualWeight.value.toString(),
                             style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w600,
@@ -315,7 +316,7 @@ class _WeightDetailsScreenState extends State<WeightDetailsScreen> {
                                 color: Colors.black),
                           ),
                           Text(
-                            volumetricWeight.toStringAsFixed(2),
+                            controller.totalVolumetricWeight.value.toStringAsFixed(2),
                             style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w600,
@@ -331,6 +332,7 @@ class _WeightDetailsScreenState extends State<WeightDetailsScreen> {
                           if(weightList.isEmpty){
                             AppToast.showMessage('Please add weight');
                           }else{
+                            controller.weightList.value=weightList;
                             Get.toNamed(AppRoutes.specialService);
                           }
                         },

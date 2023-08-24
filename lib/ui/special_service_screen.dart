@@ -114,7 +114,8 @@ class _SpecialServiceScreenState extends State<SpecialServiceScreen> {
                             shrinkWrap: true,
                             itemCount: serviceList.length,
                             itemBuilder: (context, index) {
-                              return Container(
+                              return
+                                Container(
                                 padding: EdgeInsets.all(15.r),
                                 margin: EdgeInsets.only(bottom: 15.h),
                                 decoration: BoxDecoration(
@@ -199,6 +200,7 @@ class _SpecialServiceScreenState extends State<SpecialServiceScreen> {
                       if (serviceList.isEmpty) {
                         AppToast.showMessage('Please add service');
                       } else {
+                        controller.serviceList.value=serviceList;
                         Get.toNamed(AppRoutes.shipmentInvoice);
                       }
                     },

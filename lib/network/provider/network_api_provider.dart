@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
 import 'package:http/http.dart' as http;
+import 'package:starlinex_courier/network/api/requests/airway_info_request.dart';
 import '../../app/utils/app_preference.dart';
 import '../../app/utils/app_strings.dart';
 import '../api/api_exceptions.dart';
 import '../api/api_urls.dart';
 import 'base_api_provider.dart';
-
 
 class NetworkApiProvider extends BaseApiProvider{
 
@@ -44,10 +46,40 @@ class NetworkApiProvider extends BaseApiProvider{
           },
           body: jsonEncode(data))
           .timeout(const Duration(seconds: 10));
-      print('fbifbreifiuer${response.statusCode} $data');
       responseJson = returnResponse(response);
-      print('fbifbreifiuer$responseJson');
       return responseJson;
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+  }
+
+  @override
+  Future assetApiResponse(String url,AirwayInfoRequest airwayInfoRequest) async {
+    String token=AppPreference.getString(AppStrings.authToken) ?? '';
+    print('AUTHTOKEN==>$token');
+    try {
+      var headers= {
+        HttpHeaders.contentTypeHeader: "application/json",
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      };
+      final request = http.MultipartRequest('POST',Uri.parse('${ApiUrls.baseUrl}$url'));
+      request.headers.addAll(headers);
+      var docsPath=airwayInfoRequest.docs ?? [];
+      if(docsPath.isNotEmpty){
+        for (var element in docsPath) {
+          request.files.add(http.MultipartFile('doc',
+              File(element).readAsBytes().asStream(), File(element).lengthSync(),
+              filename: element.split("/").last));
+        }
+      }
+      if (kDebugMode) {
+        log('JSONDATA====>${jsonEncode(airwayInfoRequest.json)}');
+      }
+      request.fields['airWay']=jsonEncode(airwayInfoRequest.json);
+      var response = await request.send();
+      var responseData = await response.stream.toBytes();
+      var responseString = String.fromCharCodes(responseData);
+      return jsonDecode(responseString);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
