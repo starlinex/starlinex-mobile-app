@@ -25,6 +25,8 @@ dependencies:
   country_picker: ^2.0.20
   intl: ^0.18.1
   image_picker: ^1.0.0
+  pdf: ^3.10.1
+  printing: ^5.10.3
 
 dev_dependencies:
   flutter_test:

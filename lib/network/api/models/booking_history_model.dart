@@ -102,8 +102,10 @@ class BookingHistoryData {
       this.invoiceDate, 
       this.invoiceNbr, 
       this.content, 
-      this.shipperPersonName, 
-      this.shipperAddress1, 
+      this.shipperCompany,
+      this.shipperCountry,
+      this.shipperPersonName,
+      this.shipperAddress1,
       this.shipperAddress2, 
       this.shipperAddress3, 
       this.shipperZipCode, 
@@ -131,7 +133,8 @@ class BookingHistoryData {
       this.actualWeight, 
       this.volumetricWeight, 
       this.consignerWeight, 
-      this.chargeableWeight, 
+      this.consignerAmount,
+      this.chargeableWeight,
       this.parcelNo, 
       this.chargeableEt, 
       this.invoiceType, 
@@ -156,6 +159,8 @@ class BookingHistoryData {
     invoiceDate = json['invoiceDate'];
     invoiceNbr = json['invoiceNbr'];
     content = json['content'];
+    shipperCompany = json['shipperCompany'];
+    shipperCountry = json['shipperCountry'];
     shipperPersonName = json['shipperPersonName'];
     shipperAddress1 = json['shipperAddress1'];
     shipperAddress2 = json['shipperAddress2'];
@@ -185,6 +190,7 @@ class BookingHistoryData {
     actualWeight = json['actualWeight'];
     volumetricWeight = json['volumetricWeight'];
     consignerWeight = json['consignerWeight'];
+    consignerAmount = json['consignerAmount'];
     chargeableWeight = json['chargeableWeight'];
     parcelNo = json['parcelNo'];
     chargeableEt = json['chargeableEt'];
@@ -225,6 +231,8 @@ class BookingHistoryData {
   String? invoiceNbr;
   String? content;
   String? shipperPersonName;
+  String? shipperCompany;
+  String? shipperCountry;
   String? shipperAddress1;
   String? shipperAddress2;
   String? shipperAddress3;
@@ -253,6 +261,7 @@ class BookingHistoryData {
   String? actualWeight;
   String? volumetricWeight;
   String? consignerWeight;
+  String? consignerAmount;
   String? chargeableWeight;
   String? parcelNo;
   String? chargeableEt;
@@ -279,6 +288,8 @@ class BookingHistoryData {
     map['invoiceDate'] = invoiceDate;
     map['invoiceNbr'] = invoiceNbr;
     map['content'] = content;
+    map['shipperCompany'] = shipperCompany;
+    map['shipperCountry'] = shipperCountry;
     map['shipperPersonName'] = shipperPersonName;
     map['shipperAddress1'] = shipperAddress1;
     map['shipperAddress2'] = shipperAddress2;
@@ -308,6 +319,7 @@ class BookingHistoryData {
     map['actualWeight'] = actualWeight;
     map['volumetricWeight'] = volumetricWeight;
     map['consignerWeight'] = consignerWeight;
+    map['consignerAmount'] = consignerAmount;
     map['chargeableWeight'] = chargeableWeight;
     map['parcelNo'] = parcelNo;
     map['chargeableEt'] = chargeableEt;

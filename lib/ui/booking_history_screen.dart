@@ -62,7 +62,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
               return
                 GestureDetector(
                   onTap: (){
-                   Get.toNamed(AppRoutes.bookingDetails);
+                   Get.toNamed(AppRoutes.bookingDetails,arguments: data[index]);
                   },
                   child:
                   Container(
