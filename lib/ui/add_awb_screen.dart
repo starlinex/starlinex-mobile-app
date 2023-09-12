@@ -319,29 +319,6 @@ class _AddAwbScreenState extends State<AddAwbScreen> {
                           title: 'Choose Invoice Number',
                           inputType: TextInputType.number,
                         ),
-                        SizedBox(height: 27.h),
-                        Text(
-                          'Content',
-                          style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        SizedBox(height: 5.h),
-                        TextFieldWidget(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter Content';
-                            } else {
-                              controller.content.value = value;
-                            }
-                          },
-                          onChanged: (value){
-                            controller.content.value = value;
-                          },
-                          title: 'Enter Content',
-                          inputType: TextInputType.text,
-                        ),
                       ],
                     ),
                   ),

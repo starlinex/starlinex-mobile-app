@@ -20,8 +20,8 @@ class ShipperDetailsController extends GetxController {
   var email = ''.obs;
   var kycType = 'AADHAAR NUMBER'.obs;
   var kycNumber = ''.obs;
-  var countryValue = ''.obs;
-  var countryCode = ''.obs;
+  var countryValue = 'INDIA'.obs;
+  var countryCode = '+91'.obs;
   var document1 = ''.obs;
   var document2 = ''.obs;
   var kycList = [

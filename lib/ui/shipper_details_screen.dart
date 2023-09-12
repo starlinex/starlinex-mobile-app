@@ -266,7 +266,7 @@ class _ShipperDetailsScreenState extends State<ShipperDetailsScreen> {
                             }
                           },
                           onTap: (){
-                            controller.showCountryList(context);
+                            // controller.showCountryList(context);
                           },
                           readOnly: true,
                           title: 'Choose Country',
@@ -451,14 +451,9 @@ class _ShipperDetailsScreenState extends State<ShipperDetailsScreen> {
                   ButtonWidget(
                     title: 'Next',
                     onPressed: () {
-                      controller.saveArgs();
                       if(formKey.currentState!.validate()){
-                        if(controller.document1.value.isNotEmpty && controller.document2.value.isNotEmpty){
                           controller.saveArgs();
                           Get.toNamed(AppRoutes.receiverDetails);
-                        }else{
-                          AppToast.showMessage('Please upload documents.');
-                        }
                       }
                     },
                   ),

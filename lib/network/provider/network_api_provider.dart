@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
 import 'package:http/http.dart' as http;
 import 'package:starlinex_courier/network/api/requests/airway_info_request.dart';
 import '../../app/utils/app_preference.dart';
@@ -71,6 +70,8 @@ class NetworkApiProvider extends BaseApiProvider{
               File(element).readAsBytes().asStream(), File(element).lengthSync(),
               filename: element.split("/").last));
         }
+      }else{
+        request.files.add(http.MultipartFile.fromBytes('doc',[], filename: ''));
       }
       if (kDebugMode) {
         log('JSONDATA====>${jsonEncode(airwayInfoRequest.json)}');

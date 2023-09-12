@@ -24,7 +24,6 @@ class AddAwbController extends GetxController {
   var insurance = 'false'.obs;
   var insuranceAmount = ''.obs;
   var invoiceNo = ''.obs;
-  var content = ''.obs;
   var args = Rxn();
   ApiResponse<ServiceListModel>? serviceListData;
 
@@ -90,7 +89,7 @@ class AddAwbController extends GetxController {
         insuranceValue: insuranceValue.value,
         invoiceDate: invoiceDate.value,
         invoiceNo: invoiceNo.value,
-        content: content.value
+        content: ''
     ).toJson();
   }
 

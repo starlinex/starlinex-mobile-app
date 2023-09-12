@@ -116,8 +116,12 @@ class ShipmentInvoiceController extends GetxController {
         shipmentItemsList: itemsList
     ).toJson();
     docs.clear();
-    docs.add(shipperModel.document1);
-    docs.add(shipperModel.document2);
+    if(shipperModel.document1.isNotEmpty){
+      docs.add(shipperModel.document1);
+    }
+    if(shipperModel.document2.isNotEmpty){
+      docs.add(shipperModel.document2);
+    }
     var request = AirwayInfoRequest(
         docs: docs,
         json: json);

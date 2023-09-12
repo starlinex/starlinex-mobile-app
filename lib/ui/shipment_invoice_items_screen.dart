@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:starlinex_courier/app/utils/app_colors.dart';
 import 'package:starlinex_courier/app/utils/app_toast.dart';
 import 'package:starlinex_courier/components/app_bar_widget.dart';
 import 'package:starlinex_courier/controllers/shipment_invoice_controller.dart';
@@ -18,15 +19,17 @@ class ShipmentInvoiceItemsScreen extends StatefulWidget {
       _ShipmentInvoiceItemsScreenState();
 }
 
-class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen> {
-
+class _ShipmentInvoiceItemsScreenState
+    extends State<ShipmentInvoiceItemsScreen> {
   late List<ShipmentItemArgs> itemsList = [];
   late ShipmentInvoiceController controller;
 
   @override
   void initState() {
     controller = Get.find<ShipmentInvoiceController>();
-    controller.mLoading.value=false;
+    controller.mLoading.value = false;
+    controller.shipmentTotalWeight.value=0;
+    controller.shipmentTotalAmount.value=0;
     super.initState();
   }
 
@@ -76,12 +79,16 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                           AppRoutes.addShipmentItem);
                                       if (navResponse != null) {
                                         itemsList.add(navResponse);
-                                        controller.shipmentTotalWeight.value = 0;
-                                        controller.shipmentTotalAmount.value = 0;
+                                        controller.shipmentTotalWeight.value =
+                                            0;
+                                        controller.shipmentTotalAmount.value =
+                                            0;
                                         itemsList.forEach((element) {
-                                          controller.shipmentTotalWeight.value +=
+                                          controller
+                                                  .shipmentTotalWeight.value +=
                                               int.parse(element.unitWeight);
-                                          controller.shipmentTotalAmount.value +=
+                                          controller
+                                                  .shipmentTotalAmount.value +=
                                               int.parse(element.amount);
                                         });
                                         setState(() {});
@@ -158,7 +165,7 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                             color:
                                                                 Colors.black),
                                                       ),
-                                                      SizedBox(width: 20.w),
+                                                      SizedBox(width: 30.w),
                                                       Text(
                                                         itemsList[index].boxNo,
                                                         style: TextStyle(
@@ -172,11 +179,15 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                   ),
                                                   GestureDetector(
                                                       onTap: () {
-                                                        controller.shipmentTotalWeight.value -=
+                                                        controller
+                                                                .shipmentTotalWeight
+                                                                .value -=
                                                             int.parse(itemsList[
                                                                     index]
                                                                 .unitWeight);
-                                                        controller.shipmentTotalAmount.value -=
+                                                        controller
+                                                                .shipmentTotalAmount
+                                                                .value -=
                                                             int.parse(
                                                                 itemsList[index]
                                                                     .amount);
@@ -201,15 +212,18 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                             FontWeight.w400,
                                                         color: Colors.black),
                                                   ),
-                                                  SizedBox(width: 20.w),
-                                                  Text(
-                                                    itemsList[index]
-                                                        .description,
-                                                    style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.black),
+                                                  SizedBox(width: 10.w),
+                                                  SizedBox(
+                                                    width: 190,
+                                                    child: Text(
+                                                      itemsList[index]
+                                                          .description,
+                                                      style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.black),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -224,7 +238,7 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                             FontWeight.w400,
                                                         color: Colors.black),
                                                   ),
-                                                  SizedBox(width: 20.w),
+                                                  SizedBox(width: 25.w),
                                                   Text(
                                                     itemsList[index].hsCode,
                                                     style: TextStyle(
@@ -246,7 +260,7 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                             FontWeight.w400,
                                                         color: Colors.black),
                                                   ),
-                                                  SizedBox(width: 20.w),
+                                                  SizedBox(width: 22.w),
                                                   Text(
                                                     itemsList[index].unitType,
                                                     style: TextStyle(
@@ -259,24 +273,85 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                               ),
                                               SizedBox(height: 5.h),
                                               Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    'Quantity :',
-                                                    style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: Colors.black),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Quantity :',
+                                                        style: TextStyle(
+                                                            fontSize: 12.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: Colors.black),
+                                                      ),
+                                                      SizedBox(width: 27.w),
+                                                      Text(
+                                                        itemsList[index].quantity,
+                                                        style: TextStyle(
+                                                            fontSize: 12.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Colors.black),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  SizedBox(width: 20.w),
-                                                  Text(
-                                                    itemsList[index].quantity,
-                                                    style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.black),
-                                                  ),
+                                                  Container(
+                                                    height: 25,
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.themeColorOrange,
+                                                      borderRadius: BorderRadius.circular(10.r)
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap:(){
+                                                            int quantity=int.parse(itemsList[index].quantity);
+                                                            quantity++;
+                                                            itemsList[index].quantity=quantity.toString();
+                                                            int updatedAmount=int.parse(itemsList[index].quantity)*int.parse(itemsList[index].unitRates);
+                                                            itemsList[index].amount=updatedAmount.toString();
+                                                            controller.shipmentTotalAmount.value = 0;
+                                                            itemsList.forEach((element) {
+                                                              controller
+                                                                  .shipmentTotalAmount.value +=
+                                                                  int.parse(element.amount);
+                                                              print('value==>${controller
+                                                                  .shipmentTotalAmount.value} ${element.amount}');
+                                                            });
+                                                            setState(() {
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                              padding:EdgeInsets.symmetric(horizontal: 5.w),
+                                                              child: const Icon(Icons.add,color: Colors.white,)),
+                                                        ),
+                                                        Container(width:2.w,height: 22,color: Colors.white),
+                                                        GestureDetector(
+                                                          onTap:(){
+                                                            int quantity=int.parse(itemsList[index].quantity);
+                                                            if(quantity>1){
+                                                              quantity--;
+                                                              itemsList[index].quantity=quantity.toString();
+                                                              int updatedAmount=int.parse(itemsList[index].quantity)*int.parse(itemsList[index].unitRates);
+                                                              itemsList[index].amount=updatedAmount.toString();
+                                                              controller.shipmentTotalAmount.value = 0;
+                                                              itemsList.forEach((element) {
+                                                                controller
+                                                                    .shipmentTotalAmount.value +=
+                                                                    int.parse(element.amount);
+                                                              });
+                                                              setState(() {
+                                                              });
+                                                            }
+                                                          },
+                                                          child: Container(
+                                                              padding:EdgeInsets.symmetric(horizontal: 5.w),
+                                                              child: const Icon(Icons.remove,color: Colors.white,)),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                               SizedBox(height: 5.h),
@@ -290,7 +365,7 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                             FontWeight.w400,
                                                         color: Colors.black),
                                                   ),
-                                                  SizedBox(width: 20.w),
+                                                  SizedBox(width: 9.w),
                                                   Text(
                                                     itemsList[index].unitWeight,
                                                     style: TextStyle(
@@ -312,7 +387,7 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                             FontWeight.w400,
                                                         color: Colors.black),
                                                   ),
-                                                  SizedBox(width: 20.w),
+                                                  SizedBox(width: 45.w),
                                                   Text(
                                                     itemsList[index].igst,
                                                     style: TextStyle(
@@ -334,7 +409,7 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                             FontWeight.w400,
                                                         color: Colors.black),
                                                   ),
-                                                  SizedBox(width: 20.w),
+                                                  SizedBox(width: 22.w),
                                                   Text(
                                                     itemsList[index].unitRates,
                                                     style: TextStyle(
@@ -356,7 +431,7 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                                             FontWeight.w400,
                                                         color: Colors.black),
                                                   ),
-                                                  SizedBox(width: 20.w),
+                                                  SizedBox(width: 28.w),
                                                   Text(
                                                     itemsList[index].amount,
                                                     style: TextStyle(
@@ -399,7 +474,8 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                       color: Colors.black),
                                 ),
                                 Text(
-                                  controller.shipmentTotalWeight.value.toString(),
+                                  controller.shipmentTotalWeight.value
+                                      .toString(),
                                   style: TextStyle(
                                       fontSize: 15.sp,
                                       fontWeight: FontWeight.w600,
@@ -419,7 +495,8 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
                                       color: Colors.black),
                                 ),
                                 Text(
-                                  controller.shipmentTotalAmount.value.toString(),
+                                  controller.shipmentTotalAmount.value
+                                      .toString(),
                                   style: TextStyle(
                                       fontSize: 15.sp,
                                       fontWeight: FontWeight.w600,
@@ -461,4 +538,5 @@ class _ShipmentInvoiceItemsScreenState extends State<ShipmentInvoiceItemsScreen>
               ))),
     );
   }
+
 }

@@ -366,13 +366,6 @@ class _ReceiverDetailsScreenState extends State<ReceiverDetailsScreen> {
                             Expanded(
                               flex: 9,
                               child: TextFieldWidget(
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Enter Phone Number';
-                                  } else {
-                                    controller.phone2.value = value;
-                                  }
-                                },
                                 onChanged: (value) {
                                   controller.phone2.value = value;
                                 },
