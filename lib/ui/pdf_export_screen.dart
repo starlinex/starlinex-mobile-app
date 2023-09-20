@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:starlinex_courier/network/api/models/booking_history_model.dart';
@@ -9,7 +9,7 @@ Future<Uint8List> makePdf(BookingHistoryData data) async {
   final pdf = Document();
   pdf.addPage(
     Page(
-      margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       build: (context) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -18,1022 +18,662 @@ Future<Uint8List> makePdf(BookingHistoryData data) async {
             Table(
                 border: TableBorder.symmetric(outside: const BorderSide()),
                 children: [
-                // Container(
-                //     child: Text('INVOICE',
-                //         style: TextStyle(
-                //             fontSize: 20.sp, fontBold: Font.timesBoldItalic()))),
-                // SizedBox(height: 10.h),
-                TableRow(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  TableRow(
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: PdfColor.fromHex("#000000"))),
+                      children: [
+                        Center(
+                          child: Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              child: Text('INVOICE',
+                                  style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontBold: Font.timesBoldItalic()))),
+                        )
+                      ]),
+                ]),
+            Table(
+                border: TableBorder.symmetric(outside: const BorderSide()),
+                children: [
+                  TableRow(children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Column(children: [
+                        Row(
                           children: [
                             Text(
-                              'INVOICE NO.:',
+                              "INVOICE NO.: ",
                               style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold
-                              ),
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
                             ),
-                            SizedBox(width: 10.w),
                             Text(
                               data.invoiceNbr.toString(),
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                              ),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
-                          ]),
-                    ),
-                    Expanded(
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          ],
+                        ),
+                        Row(
                           children: [
                             Text(
-                              'AWB NO.:',
+                              "INVOICE DATE.: ",
                               style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold
-                              ),
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
                             ),
-                            SizedBox(width: 10.w),
-                            Text(
-                              data.awbNbr.toString(),
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                          ]),
-                    ),
-                  ],
-                ),
-                // SizedBox(height: 5.h),
-                TableRow(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'INVOICE DATE.:',
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                            SizedBox(width: 10.w),
                             Text(
                               data.invoiceDate.toString(),
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                              ),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
-                          ]),
-                    ),
-                    Expanded(
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          ],
+                        ),
+                        Row(
                           children: [
                             Text(
-                              'OTHER REFERENCE',
+                              "TOTAL PIECES: ",
                               style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              "1",
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "CHARGEABLE WEIGHT: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.chargeableWeight.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Column(children: [
+                        Row(
+                          children: [
+                            Text(
+                              "AWB NO.: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.awbNbr.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "OTHER REFERENCE",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "KYC NUMBER: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.shipperKycNbr.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Container(height: 15)
+                      ]),
+                    ),
+                  ]),
+                ]),
+            Table(
+                border: TableBorder.symmetric(outside: const BorderSide()),
+                children: [
+                  TableRow(children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Text(
+                        "SHIPPER",
+                        style: TextStyle(
+                            font: Font.helveticaBold(), fontSize: 12.sp),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Text(
+                        "CONSIGNEE",
+                        style: TextStyle(
+                            font: Font.helveticaBold(), fontSize: 12.sp),
+                      ),
+                    ),
+                  ]),
+                ]),
+            Table(
+                border: TableBorder.symmetric(outside: const BorderSide()),
+                children: [
+                  TableRow(children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Column(children: [
+                        Row(
+                          children: [
+                            Text(
+                              data.shipperPersonName.toString(),
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Company Name: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.shipperCompany.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "ADDRESS: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.shipperAddress1.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "EMAIL: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.shipperEmailAddress.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "PHONE: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.shipperPhoneNbr.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        )
+                      ]),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Column(children: [
+                        Row(
+                          children: [
+                            Text(
+                              data.receiverPersonName.toString(),
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Company Name: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.receiverCompany.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "ADDRESS: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.receiverAddress1.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "EMAIL: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.receiverEmailAddress.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "PHONE: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.receiverPhoneNbr.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        )
+                      ]),
+                    ),
+                  ]),
+                ]),
+            Table(
+                border: TableBorder.symmetric(outside: const BorderSide()),
+                children: [
+                  TableRow(children: [
+                    Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: const EdgeInsets.all(9.5),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: PdfColor.fromHex("#000000"))),
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          child: Text(
+                            "SR NO",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                        )),
+                    Expanded(
+                        flex: 5,
+                        child: Container(
+                          padding: const EdgeInsets.all(18),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: PdfColor.fromHex("#000000"))),
+                          alignment: Alignment.topCenter,
+                          width: double.infinity,
+                          child: Text(
+                            "DESCRIPTION",
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: PdfColor.fromHex("#000000"))),
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          child: Text(
+                            "UNIT TYPE",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: PdfColor.fromHex("#000000"))),
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          child: Text(
+                            "QUANTITY",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: PdfColor.fromHex("#000000"))),
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          child: Text(
+                            "UNIT RATES",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                        )),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: PdfColor.fromHex("#000000"))),
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        child: Text(
+                          "AMOUNT(CFR)",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              font: Font.helveticaBold(), fontSize: 12.sp),
+                        ),
+                      ),
+                    )
+                  ]),
+                ]),
+            Table(
+                border: TableBorder.symmetric(outside: const BorderSide()),
+                children: [
+                  TableRow(children: [
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: PdfColor.fromHex("#000000"))),
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                          Text(
+                            "BOX NO: 1",
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                          SizedBox(width: 10.w),
+                          Text(
+                            "DIMENSIONS (CMS) 36 * 36 * 36 ,",
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                          SizedBox(width: 10.w),
+                          Text(
+                            "ACTUAL WEIGHT - ${data.actualWeight} KG",
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                        ])
+                    ),
+                  ]),
+                ]),
+            ListView.builder(
+              padding: EdgeInsets.zero,
+                itemCount: data.shipmentDetailsList!.length,
+                itemBuilder:(context,index){
+                int srNo=index+1;
+                print('Data==>${data.shipmentDetailsList?[index].shipmentDescription}');
+                  return Table(
+                      border: TableBorder.symmetric(outside: const BorderSide()),
+                      children: [
+                        TableRow(children: [
+                          Expanded(
+                              flex: 1,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: PdfColor.fromHex("#000000"))),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                child: Text(
+                                  srNo.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      font: Font.helveticaBold(), fontSize: 12.sp),
+                                ),
+                              )),
+                          Expanded(
+                              flex: 5,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: PdfColor.fromHex("#000000"))),
+                                alignment: Alignment.topCenter,
+                                width: double.infinity,
+                                child: Text(
+                                  '${data.shipmentDetailsList?[index].shipmentDescription}',
+                                  maxLines:1,
+                                  overflow:TextOverflow.visible,
+                                  style: TextStyle(
+                                      font: Font.helveticaBold(), fontSize: 12.sp),
+                                ),
+                              )),
+                          Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: PdfColor.fromHex("#000000"))),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                child: Text(
+                                  "${data.shipmentDetailsList?[index].shipmentUnityType}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      font: Font.helveticaBold(), fontSize: 12.sp),
+                                ),
+                              )),
+                          Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: PdfColor.fromHex("#000000"))),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                child: Text(
+                                  "${data.shipmentDetailsList?[index].shipmentQuantity}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      font: Font.helveticaBold(), fontSize: 12.sp),
+                                ),
+                              )),
+                          Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: PdfColor.fromHex("#000000"))),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                child: Text(
+                                  "${data.shipmentDetailsList?[index].shipmentUnitRates}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      font: Font.helveticaBold(), fontSize: 12.sp),
+                                ),
+                              )),
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  border:
+                                  Border.all(color: PdfColor.fromHex("#000000"))),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              child: Text(
+                                "${data.shipmentDetailsList?[index].shipmentAmount}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    font: Font.helveticaBold(), fontSize: 12.sp),
                               ),
                             ),
-                          ]),
+                          )
+                        ]),
+                      ]);
+             }),
+            Table(
+                border: TableBorder.symmetric(outside: const BorderSide()),
+                children: [
+                  TableRow(children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Text(
+                        "AMOUNT CHARGEABLE",
+                        style: TextStyle(
+                            // font: Font.helveticaBold(),
+                         fontSize: 12.sp),
+                      ),
                     ),
-                  ],
-                ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'TOTAL PIECES :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.pcs.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'KYC NO. :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.shipperKycNbr.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'CHARGEABLE WEIGHT :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.chargeableWeight.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //     Container(),
-                //   ],
-                // ),
-                // SizedBox(height: 10.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'SHIPPER',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'CONSIGNEE',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 10.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               data.shipperPersonName.toString(),
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               data.receiverPersonName.toString(),
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'COMPANY NAME :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.shipperCompany.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'COMPANY NAME :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.receiverCompany.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'ADDRESS :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.shipperAddress1.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'ADDRESS :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.receiverAddress1.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     data.shipperAddress2!=null?Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               data.shipperAddress2.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ):Container(),
-                //     data.receiverAddress2!=null?Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               data.receiverAddress2.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ):Container()
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     data.shipperAddress3!=null?Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               data.shipperAddress3.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ):Container(),
-                //     data.receiverAddress3!=null?Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               data.receiverAddress3.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ):Container()
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'EMAIL :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.shipperEmailAddress.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'EMAIL :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.receiverEmailAddress.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'PHONE NUMBER :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.shipperPhoneNbr.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //     Expanded(
-                //       child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'PHONE NUMBER :',
-                //               style: TextStyle(
-                //                   fontSize: 12.sp,
-                //                   fontWeight: FontWeight.bold
-                //               ),
-                //             ),
-                //             SizedBox(width: 10.w),
-                //             Text(
-                //               data.receiverPhoneNbr.toString(),
-                //               style: TextStyle(
-                //                 fontSize: 12.sp,
-                //               ),
-                //             ),
-                //           ]),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // data.shipperAddress2 != null
-                //     ? Column(children: [
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Expanded(
-                //         child: Text(
-                //           'Shipper Address 2 :',
-                //           style: TextStyle(
-                //             fontSize: 12.sp,
-                //           ),
-                //         ),
-                //       ),
-                //       Expanded(
-                //         child: Text(
-                //           data.shipperAddress2.toString(),
-                //           style: TextStyle(
-                //             fontSize: 12.sp,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                //   SizedBox(height: 5.h),
-                // ])
-                //     : Container(),
-                // data.shipperAddress3 != null
-                //     ? Column(children: [
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Expanded(
-                //         child: Text(
-                //           'Shipper Address 3 :',
-                //           style: TextStyle(
-                //             fontSize: 12.sp,
-                //           ),
-                //         ),
-                //       ),
-                //       Expanded(
-                //         child: Text(
-                //           data.shipperAddress3.toString(),
-                //           style: TextStyle(
-                //             fontSize: 12.sp,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                //   SizedBox(height: 5.h),
-                // ])
-                //     : Container(),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Shipper Post Code :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.shipperZipCode.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Shipper City :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.shipperCity.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Shipper State :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.shipperState.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Shipper Country :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.shipperCountry.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Shipper Phone :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.shipperPhoneNbr.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Shipper Email :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.shipperEmailAddress.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Shipper KYC Type :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.shipperKycType.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Shipper KYC No. :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.shipperKycNbr.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Address Book :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverAddressBook.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver Company :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverCompany.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver Person Name :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverPersonName.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver Address 1 :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverAddress1.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // data.receiverAddress2 != null
-                //     ? Column(children: [
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Expanded(
-                //         child: Text(
-                //           'Receiver Address 2 :',
-                //           style: TextStyle(
-                //             fontSize: 12.sp,
-                //           ),
-                //         ),
-                //       ),
-                //       Expanded(
-                //         child: Text(
-                //           data.receiverAddress2.toString(),
-                //           style: TextStyle(
-                //             fontSize: 12.sp,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                //   SizedBox(height: 5.h),
-                // ])
-                //     : Container(),
-                // data.receiverAddress3 != null
-                //     ? Column(children: [
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Expanded(
-                //         child: Text(
-                //           'Receiver Address 3 :',
-                //           style: TextStyle(
-                //             fontSize: 12.sp,
-                //           ),
-                //         ),
-                //       ),
-                //       Expanded(
-                //         child: Text(
-                //           data.receiverAddress3.toString(),
-                //           style: TextStyle(
-                //             fontSize: 12.sp,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                //   SizedBox(height: 5.h),
-                // ])
-                //     : Container(),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver Post Code :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverZipCode.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver City :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverCity.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver State :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverState.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver Country :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverCountry.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver Phone :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverPhoneNbr.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver Phone 2 :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverPhoneNbr2.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Receiver Email :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.receiverEmailAddress.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 5.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         'Note :',
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Text(
-                //         data.note.toString(),
-                //         style: TextStyle(
-                //           fontSize: 12.sp,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-              ]
-            ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Text(
+                        "TOTAL : ${data.consignerAmount} INR",
+                        style: TextStyle(
+                            font: Font.helveticaBold(), fontSize: 12.sp),
+                      ),
+                    ),
+                  ]),
+                ]),
+            Table(
+                border: TableBorder.symmetric(outside: const BorderSide()),
+                children: [
+                  TableRow(children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Text(
+                        "NOTES",
+                        style: TextStyle(
+                            font: Font.helveticaBold(), fontSize: 12.sp),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Text(
+                        "SIGNATURE/STAMP",
+                        style: TextStyle(
+                            font: Font.helveticaBold(), fontSize: 12.sp),
+                      ),
+                    ),
+                  ]),
+                ]),
+            Table(
+                border: TableBorder.symmetric(outside: const BorderSide()),
+                children: [
+                  TableRow(children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Text(
+                        data.descNote.toString(),
+                        style: TextStyle(
+                            // font: Font.helveticaBold(),
+                            fontSize: 8.sp),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: PdfColor.fromHex("#000000"))),
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      child: Text(
+                        "",
+                        style: TextStyle(
+                            font: Font.helveticaBold(), fontSize: 12.sp),
+                      ),
+                    ),
+                  ]),
+                ]),
           ],
         );
       },
