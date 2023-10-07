@@ -1,7 +1,8 @@
 class ApiUrls {
 
   //Base Urls
-  static const baseUrl = 'https://starlinex.onrender.com/api/v1/';
+  // static const baseUrl = 'https://starlinex.onrender.com/api/v1/';
+  static const baseUrl = 'http://193.203.163.156:8080/api/v1/';
 
   //End Urls
   static const login = 'auth/authenticate';

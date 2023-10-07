@@ -7,6 +7,22 @@ import 'package:starlinex_courier/network/api/models/booking_history_model.dart'
 
 Future<Uint8List> makePdf(BookingHistoryData data) async {
   final pdf = Document();
+  String shipperAddress=data.shipperAddress1.toString();
+  String receiverAddress=data.receiverAddress1.toString();
+  String finalShipperAddress='';
+  String finalReceiverAddress='';
+  if(data.shipperAddress2!=null){
+    finalShipperAddress="$shipperAddress ${data.shipperAddress2}";
+  }
+  if(data.shipperAddress3!=null){
+    finalShipperAddress="$shipperAddress ${data.shipperAddress2} ${data.shipperAddress3}";
+  }
+  if(data.receiverAddress2!=null){
+    finalReceiverAddress="$receiverAddress ${data.receiverAddress2}";
+  }
+  if(data.receiverAddress3!=null){
+    finalReceiverAddress="$receiverAddress ${data.receiverAddress2} ${data.receiverAddress3}";
+  }
   pdf.addPage(
     Page(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -93,7 +109,7 @@ Future<Uint8List> makePdf(BookingHistoryData data) async {
                                   font: Font.helveticaBold(), fontSize: 12.sp),
                             ),
                             Text(
-                              data.chargeableWeight.toString(),
+                              data.actualWeight.toString(),
                               style: TextStyle(fontSize: 12.sp),
                             ),
                           ],
@@ -214,18 +230,21 @@ Future<Uint8List> makePdf(BookingHistoryData data) async {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              "ADDRESS: ",
-                              style: TextStyle(
-                                  font: Font.helveticaBold(), fontSize: 12.sp),
-                            ),
-                            Text(
-                              data.shipperAddress1.toString(),
-                              style: TextStyle(fontSize: 12.sp),
-                            ),
-                          ],
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "ADDRESS: ",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            finalShipperAddress.toString(),
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
                         ),
                         Row(
                           children: [
@@ -285,18 +304,21 @@ Future<Uint8List> makePdf(BookingHistoryData data) async {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              "ADDRESS: ",
-                              style: TextStyle(
-                                  font: Font.helveticaBold(), fontSize: 12.sp),
-                            ),
-                            Text(
-                              data.receiverAddress1.toString(),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "ADDRESS: ",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                font: Font.helveticaBold(), fontSize: 12.sp),
+                          ),
+                        ),
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              finalReceiverAddress.toString(),
                               style: TextStyle(fontSize: 12.sp),
                             ),
-                          ],
                         ),
                         Row(
                           children: [
@@ -323,7 +345,7 @@ Future<Uint8List> makePdf(BookingHistoryData data) async {
                               style: TextStyle(fontSize: 12.sp),
                             ),
                           ],
-                        )
+                        ),
                       ]),
                     ),
                   ]),
@@ -430,41 +452,46 @@ Future<Uint8List> makePdf(BookingHistoryData data) async {
                     )
                   ]),
                 ]),
-            Table(
-                border: TableBorder.symmetric(outside: const BorderSide()),
-                children: [
-                  TableRow(children: [
-                    Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: PdfColor.fromHex("#000000"))),
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                          Text(
-                            "BOX NO: 1",
-                            style: TextStyle(
-                                font: Font.helveticaBold(), fontSize: 12.sp),
+            ListView.builder(
+                itemCount:data.weightAndDimensions!.length,
+                itemBuilder: (context,index){
+                  int srNo=index+1;
+                  return Table(
+                      border: TableBorder.symmetric(outside: const BorderSide()),
+                      children: [
+                        TableRow(children: [
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border:
+                                  Border.all(color: PdfColor.fromHex("#000000"))),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "BOX NO: $srNo",
+                                      style: TextStyle(
+                                          font: Font.helveticaBold(), fontSize: 12.sp),
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "DIMENSIONS (CMS) ${data.weightAndDimensions![index].lcm} * ${data.weightAndDimensions![index].bcm} * ${data.weightAndDimensions![index].hcm},",
+                                      style: TextStyle(
+                                          font: Font.helveticaBold(), fontSize: 12.sp),
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "ACTUAL WEIGHT - ${data.weightAndDimensions![index].actualWt} KG",
+                                      style: TextStyle(
+                                          font: Font.helveticaBold(), fontSize: 12.sp),
+                                    ),
+                                  ])
                           ),
-                          SizedBox(width: 10.w),
-                          Text(
-                            "DIMENSIONS (CMS) 36 * 36 * 36 ,",
-                            style: TextStyle(
-                                font: Font.helveticaBold(), fontSize: 12.sp),
-                          ),
-                          SizedBox(width: 10.w),
-                          Text(
-                            "ACTUAL WEIGHT - ${data.actualWeight} KG",
-                            style: TextStyle(
-                                font: Font.helveticaBold(), fontSize: 12.sp),
-                          ),
-                        ])
-                    ),
-                  ]),
-                ]),
+                        ]),
+                      ]);
+            }),
             ListView.builder(
               padding: EdgeInsets.zero,
                 itemCount: data.shipmentDetailsList!.length,
