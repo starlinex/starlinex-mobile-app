@@ -279,7 +279,7 @@ class _WeightDetailsScreenState extends State<WeightDetailsScreen> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  height: 160.h,
+                  height: 165.h,
                   color: Colors.grey.shade200,
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(10.r),
