@@ -140,6 +140,19 @@ Future<Uint8List> makePdf(BookingHistoryData data) async {
                         Row(
                           children: [
                             Text(
+                              "Branch: ",
+                              style: TextStyle(
+                                  font: Font.helveticaBold(), fontSize: 12.sp),
+                            ),
+                            Text(
+                              data.branchName.toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
                               "OTHER REFERENCE",
                               style: TextStyle(
                                   font: Font.helveticaBold(), fontSize: 12.sp),

@@ -141,7 +141,8 @@ class BookingHistoryData {
       this.incoterms, 
       this.note, 
       this.descNote, 
-      this.shipmentDetailsList, 
+      this.branchName,
+      this.shipmentDetailsList,
       this.specialServices, 
       this.weightAndDimensions,});
 
@@ -198,6 +199,7 @@ class BookingHistoryData {
     incoterms = json['incoterms'];
     note = json['note'];
     descNote = json['descNote'];
+    branchName = json['branchName'];
     if (json['shipmentDetailsList'] != null) {
       shipmentDetailsList = [];
       json['shipmentDetailsList'].forEach((v) {
@@ -269,6 +271,7 @@ class BookingHistoryData {
   String? incoterms;
   String? note;
   String? descNote;
+  String? branchName;
   List<ShipmentDetailsList>? shipmentDetailsList;
   List<SpecialServices>? specialServices;
   List<WeightAndDimensions>? weightAndDimensions;
@@ -327,6 +330,7 @@ class BookingHistoryData {
     map['incoterms'] = incoterms;
     map['note'] = note;
     map['descNote'] = descNote;
+    map['branchName'] = branchName;
     if (shipmentDetailsList != null) {
       map['shipmentDetailsList'] = shipmentDetailsList?.map((v) => v.toJson()).toList();
     }

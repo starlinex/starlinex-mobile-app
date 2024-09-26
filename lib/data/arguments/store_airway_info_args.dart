@@ -125,6 +125,7 @@ class StoreAirwayInfoArgs {
   dynamic weightList;
   dynamic serviceList;
   dynamic shipmentItemsList;
+  String branchId;
 
   StoreAirwayInfoArgs(
       {
@@ -177,6 +178,7 @@ class StoreAirwayInfoArgs {
         required this.weightList,
         required this.serviceList,
         required this.shipmentItemsList,
+        required this.branchId,
       });
 
   Map toJson() => {
@@ -229,5 +231,6 @@ class StoreAirwayInfoArgs {
     'weightAndDimensions': weightList,
     'specialServices': serviceList,
     'shipmentDetailsList': shipmentItemsList,
+    'branchId': branchId,
   };
 }

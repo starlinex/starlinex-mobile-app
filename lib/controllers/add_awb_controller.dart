@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:starlinex_courier/app/utils/app_toast.dart';
 import 'package:starlinex_courier/data/arguments/air_waybill_args.dart';
 import 'package:intl/intl.dart';
+import 'package:starlinex_courier/network/api/models/branch_list_model.dart';
 import 'package:starlinex_courier/network/api/models/service_list_model.dart';
 
 import '../app/app_repository.dart';
@@ -24,13 +25,17 @@ class AddAwbController extends GetxController {
   var insurance = 'false'.obs;
   var insuranceAmount = ''.obs;
   var invoiceNo = ''.obs;
+  var branchName="".obs;
+  var branchId="".obs;
   var args = Rxn();
   ApiResponse<ServiceListModel>? serviceListData;
+  ApiResponse<BranchListModel>? branchListData;
 
 
   @override
   void onInit() {
     getUuid();
+    getBranchList();
     getServiceList();
     super.onInit();
   }
@@ -99,6 +104,17 @@ class AddAwbController extends GetxController {
       serviceListData= ApiResponse.success(response.data());
     }else{
       serviceListData= ApiResponse.error(response.error());
+    }
+    update();
+    return null;
+  }
+
+  Future<ApiResponse<BranchListModel>?> getBranchList() async {
+    var response=await locator<AppRepository>().getBranchList();
+    if(response.isSuccess()){
+      branchListData= ApiResponse.success(response.data());
+    }else{
+      branchListData= ApiResponse.error(response.error());
     }
     update();
     return null;

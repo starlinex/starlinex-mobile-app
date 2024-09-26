@@ -10,16 +10,18 @@ class TextFieldWidget extends StatelessWidget {
   final bool? isPasswordHide;
   final bool? isEnabled;
   final bool? readOnly;
+  final TextEditingController? controller;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
 
-  const TextFieldWidget({Key? key,this.inputType,required this.title,this.initialValue,this.isPasswordHide,this.isEnabled,this.readOnly,this.validator,this.onChanged,this.onTap}) : super(key: key);
+  const TextFieldWidget({Key? key,this.inputType,required this.title,this.initialValue,this.isPasswordHide,this.isEnabled,this.readOnly,this.validator,this.onChanged,this.onTap,this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onTap: onTap,
+      controller: controller,
       enabled: isEnabled,
       readOnly: readOnly ?? false,
       initialValue: initialValue,

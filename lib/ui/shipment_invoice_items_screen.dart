@@ -520,6 +520,7 @@ class _ShipmentInvoiceItemsScreenState
                                       Get.offAllNamed(AppRoutes.home);
                                       AppToast.showMessage(
                                           response.data().message.toString());
+
                                     } else {
                                       controller.mLoading.value = false;
                                       AppToast.showMessage(response.error());

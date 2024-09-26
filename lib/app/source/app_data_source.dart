@@ -1,4 +1,6 @@
+import 'package:starlinex_courier/network/api/models/address_list_model.dart';
 import 'package:starlinex_courier/network/api/models/booking_history_model.dart';
+import 'package:starlinex_courier/network/api/models/branch_list_model.dart';
 import 'package:starlinex_courier/network/api/models/reset_password_model.dart';
 import 'package:starlinex_courier/network/api/models/service_list_model.dart';
 import 'package:starlinex_courier/network/api/models/shipment_item_model.dart';
@@ -7,6 +9,7 @@ import 'package:starlinex_courier/network/api/requests/airway_info_request.dart'
 import 'package:starlinex_courier/network/api/requests/common_request.dart';
 import '../../network/api/api_response.dart';
 import '../../network/api/models/register_model.dart';
+import '../../network/api/models/store_airway_model.dart';
 import '../../network/api/requests/login_register_request.dart';
 
 abstract class AppDataSource{
@@ -25,8 +28,14 @@ abstract class AppDataSource{
 
   Future<ApiResponse<ShipmentItemModel>> searchShipmentItem(CommonRequest request);
 
-  Future<ApiResponse<ResetPasswordModel>> storeAirwayInfo(AirwayInfoRequest request);
+  Future<ApiResponse<StoreAirwayModel>> storeAirwayInfo(AirwayInfoRequest request);
 
   Future<ApiResponse<BookingHistoryModel>> bookingHistory(CommonRequest request);
+
+  Future<ApiResponse<BookingHistoryModel>> sendMail(CommonRequest request);
+
+  Future<ApiResponse<AddressListModel>> getAddressList(CommonRequest request);
+
+  Future<ApiResponse<BranchListModel>> getBranchList();
 
 }

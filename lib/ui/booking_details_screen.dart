@@ -56,6 +56,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                       children: [
                         ItemWidget(title: 'AWB NO. :',value: data.awbNbr.toString()),
                         SizedBox(height: 10.h),
+                        ItemWidget(title: 'Branch :',value: data.branchName.toString()),
+                        SizedBox(height: 10.h),
                         ItemWidget(title: 'Destination :',value: data.destination.toString()),
                         SizedBox(height: 10.h),
                         ItemWidget(title: 'Product :',value: data.product.toString()),

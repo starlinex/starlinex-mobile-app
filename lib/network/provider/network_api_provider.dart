@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:starlinex_courier/network/api/requests/airway_info_request.dart';
+import 'package:starlinex_courier/network/api/requests/common_request.dart';
 import '../../app/utils/app_preference.dart';
+import '../../app/utils/app_routes.dart';
 import '../../app/utils/app_strings.dart';
 import '../api/api_exceptions.dart';
 import '../api/api_urls.dart';
@@ -28,6 +31,8 @@ class NetworkApiProvider extends BaseApiProvider{
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
+    } on UnauthorisedException {
+      _handleTokenExpiration();
     }
   }
 
@@ -49,11 +54,13 @@ class NetworkApiProvider extends BaseApiProvider{
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
+    } on UnauthorisedException {
+      _handleTokenExpiration();
     }
   }
 
   @override
-  Future assetApiResponse(String url,AirwayInfoRequest airwayInfoRequest) async {
+  Future assetApiResponse(String url,AirwayInfoRequest? airwayInfoRequest, CommonRequest? commonRequest) async {
     String token=AppPreference.getString(AppStrings.authToken) ?? '';
     print('AUTHTOKEN==>$token');
     try {
@@ -63,26 +70,34 @@ class NetworkApiProvider extends BaseApiProvider{
       };
       final request = http.MultipartRequest('POST',Uri.parse('${ApiUrls.baseUrl}$url'));
       request.headers.addAll(headers);
-      var docsPath=airwayInfoRequest.docs ?? [];
-      if(docsPath.isNotEmpty){
-        for (var element in docsPath) {
-          request.files.add(http.MultipartFile('doc',
-              File(element).readAsBytes().asStream(), File(element).lengthSync(),
-              filename: element.split("/").last));
+      if(airwayInfoRequest!=null){
+        var docsPath=airwayInfoRequest.docs ?? [];
+        if(docsPath.isNotEmpty){
+          for (var element in docsPath) {
+            request.files.add(http.MultipartFile('doc',
+                File(element).readAsBytes().asStream(), File(element).lengthSync(),
+                filename: element.split("/").last));
+          }
+        }else{
+          request.files.add(http.MultipartFile.fromBytes('doc',[], filename: ''));
         }
+        if (kDebugMode) {
+          log('JSONDATA====>${jsonEncode(airwayInfoRequest.json)}');
+        }
+        request.fields['airWay']=jsonEncode(airwayInfoRequest.json);
       }else{
-        request.files.add(http.MultipartFile.fromBytes('doc',[], filename: ''));
+        request.files.add(http.MultipartFile('file',
+            File(commonRequest!.pdfFilePath.toString()).readAsBytes().asStream(), File(commonRequest.pdfFilePath.toString()).lengthSync(),
+            filename: commonRequest.pdfFilePath.toString().split("/").last));
       }
-      if (kDebugMode) {
-        log('JSONDATA====>${jsonEncode(airwayInfoRequest.json)}');
-      }
-      request.fields['airWay']=jsonEncode(airwayInfoRequest.json);
       var response = await request.send();
       var responseData = await response.stream.toBytes();
       var responseString = String.fromCharCodes(responseData);
       return jsonDecode(responseString);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
+    } on UnauthorisedException {
+      _handleTokenExpiration();
     }
   }
 
@@ -107,5 +122,9 @@ class NetworkApiProvider extends BaseApiProvider{
     }
   }
 
+  void _handleTokenExpiration() {
+    AppPreference.clear();
+    Get.offAllNamed(AppRoutes.login); // Clear the navigation stack and navigate to the login screen
+  }
 
 }

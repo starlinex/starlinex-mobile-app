@@ -241,7 +241,7 @@ class _AddShipmentItemScreenState extends State<AddShipmentItemScreen> {
                                         initialValue: "",
                                         validator: (value) {
                                           if (value!.isEmpty) {
-                                            return 'Enter IGST';
+                                            controller.igst.value = "";
                                           } else {
                                             controller.igst.value = value;
                                           }

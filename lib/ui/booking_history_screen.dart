@@ -104,7 +104,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                         Row(
                           children: [
                             Text(
-                              'Booking Data :',
+                              'Booking Date :',
                               style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w400,

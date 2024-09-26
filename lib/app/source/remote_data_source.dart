@@ -1,16 +1,19 @@
 import 'package:starlinex_courier/app/source/app_data_source.dart';
+import 'package:starlinex_courier/network/api/models/address_list_model.dart';
 import 'package:starlinex_courier/network/api/models/booking_history_model.dart';
+import 'package:starlinex_courier/network/api/models/branch_list_model.dart';
 import 'package:starlinex_courier/network/api/models/service_list_model.dart';
 import 'package:starlinex_courier/network/api/models/shipment_item_model.dart';
-import 'package:starlinex_courier/network/api/models/store_airway_info_model.dart';
 import 'package:starlinex_courier/network/api/requests/airway_info_request.dart';
 import 'package:starlinex_courier/network/api/requests/common_request.dart';
 import '../../network/api/api_response.dart';
 import '../../network/api/api_urls.dart';
 import '../../network/api/models/register_model.dart';
 import '../../network/api/models/reset_password_model.dart';
+import '../../network/api/models/store_airway_model.dart';
 import '../../network/api/requests/login_register_request.dart';
 import '../../network/provider/network_api_provider.dart';
+
 
 class RemoteDataSource extends AppDataSource{
 
@@ -157,12 +160,11 @@ class RemoteDataSource extends AppDataSource{
   }
 
   @override
-  Future<ApiResponse<ResetPasswordModel>> storeAirwayInfo(AirwayInfoRequest request) async {
+  Future<ApiResponse<StoreAirwayModel>> storeAirwayInfo(AirwayInfoRequest request) async {
     try {
-      print('nfdnfi');
       var response = await networkApiProvider.assetApiResponse(
-          ApiUrls.storeAirwayInfo,request);
-      final model = ResetPasswordModel.fromJson(response);
+          ApiUrls.storeAirwayInfo,request,null);
+      final model = StoreAirwayModel.fromJson(response);
       if (model.responseCode == 200) {
         return ApiResponse.success(model);
       } else {
@@ -188,5 +190,56 @@ class RemoteDataSource extends AppDataSource{
       return ApiResponse.error(e.toString());
     }
   }
+
+  @override
+  Future<ApiResponse<BookingHistoryModel>> sendMail(CommonRequest request) async {
+    try {
+      var response = await networkApiProvider.assetApiResponse(
+          ApiUrls.sendMail(request.userId.toString(),request.branchId.toString()),null,request);
+      final model = BookingHistoryModel.fromJson(response);
+      if (model.responseCode == 200) {
+        return ApiResponse.success(model);
+      } else {
+        return ApiResponse.error(model.message ?? 'Something went wrong');
+      }
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  @override
+  Future<ApiResponse<AddressListModel>> getAddressList(CommonRequest request) async {
+    try {
+      var response = await networkApiProvider.getApiResponse(
+          ApiUrls.getAddresses(request.userId.toString(), request.search.toString())
+      );
+      final model = AddressListModel.fromJson(response);
+      if (model.responseCode == 200) {
+        return ApiResponse.success(model);
+      } else {
+        return ApiResponse.error(model.message ?? 'Something went wrong');
+      }
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  @override
+  Future<ApiResponse<BranchListModel>> getBranchList() async {
+    try {
+      var response = await networkApiProvider.getApiResponse(
+          ApiUrls.branchList
+      );
+      final model = BranchListModel.fromJson(response);
+      if (model.responseCode == 200) {
+        return ApiResponse.success(model);
+      } else {
+        return ApiResponse.error(model.message ?? 'Something went wrong');
+      }
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
 
 }

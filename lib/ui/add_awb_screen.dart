@@ -6,6 +6,7 @@ import 'package:starlinex_courier/app/utils/app_colors.dart';
 import 'package:starlinex_courier/components/app_bar_widget.dart';
 import 'package:starlinex_courier/components/loading_view.dart';
 import 'package:starlinex_courier/controllers/add_awb_controller.dart';
+import 'package:starlinex_courier/network/api/models/branch_list_model.dart';
 import '../app/utils/app_routes.dart';
 import '../components/button_widget.dart';
 import '../components/text_field_widget.dart';
@@ -22,6 +23,8 @@ class _AddAwbScreenState extends State<AddAwbScreen> {
   
    var controller=Get.put(AddAwbController());
    final formKey=GlobalKey<FormState>();
+   int selectedIndex = -1;
+
 
   @override
   void initState() {
@@ -80,6 +83,76 @@ class _AddAwbScreenState extends State<AddAwbScreen> {
                           title: 'Enter AWB Number',
                           inputType: TextInputType.text,
                         ),
+                        SizedBox(height: 30.h),
+                        GetBuilder<AddAwbController>(
+                            builder: (awbController) {
+                              List<BranchListData> data;
+                              List<String> listAddress=[];
+                              if(awbController.branchListData==null){
+                                return const LoadingView();
+                              }else if(awbController.branchListData!.data().response!.isEmpty){
+                                return SizedBox(
+                                  height: 50.h,
+                                  child: DropdownSearch<String>(
+                                    popupProps: const PopupProps.menu(
+                                      showSearchBox: true,
+                                      showSelectedItems: true,
+                                    ),
+                                    items: listAddress,
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                          borderSide: BorderSide(width: 2, color: Colors.grey.withOpacity(0.4)),
+                                        ),
+                                        isDense: true,
+                                        labelText: "Select Branch",
+                                        hintText: "Choose Branch",
+                                      ),
+                                    ),
+                                    onChanged: (value){
+
+                                    },
+                                    selectedItem:"No Branch Found",
+                                  ),
+                                );
+                              } else{
+                                data=awbController.branchListData!.data().response!;
+                                data.map((e) => listAddress.add(e.branchName.toString())).toList();
+                                controller.branchName.value=data[0].branchName.toString();
+                                controller.branchId.value=data[0].id.toString();
+                                return SizedBox(
+                                  height: 50.h,
+                                  child: DropdownSearch<String>(
+                                    popupProps: const PopupProps.menu(
+                                      showSearchBox: true,
+                                      showSelectedItems: true,
+                                    ),
+                                    items: listAddress,
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                            borderSide: BorderSide(width: 2, color: Colors.grey.withOpacity(0.4)),
+                                          ),
+                                          labelText: "Select Branch",
+                                          hintText: "Select Branch",
+                                          isDense: true
+                                      ),
+                                    ),
+                                    onChanged: (value){
+                                      controller.branchName.value=value.toString();
+                                      selectedIndex = data.indexWhere((element) => element.branchName == value);
+                                      if (selectedIndex != -1) {
+                                        controller.branchId.value=data[selectedIndex].id.toString();
+                                      }
+                                    },
+                                    selectedItem:controller.branchName.value,
+                                  ),
+                                );
+                              }
+                            }
+                        ),
                         SizedBox(height: 27.h),
                         Text(
                           'Destination',
@@ -104,29 +177,6 @@ class _AddAwbScreenState extends State<AddAwbScreen> {
                           readOnly: true,
                           inputType: TextInputType.text,
                         )),
-                        SizedBox(height: 27.h),
-                        Text(
-                          'Product',
-                          style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        SizedBox(height: 5.h),
-                        TextFieldWidget(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter Product';
-                            } else {
-                              controller.product.value = value;
-                            }
-                          },
-                          onChanged: (value){
-                            controller.product.value = value;
-                          },
-                          title: 'Enter Product',
-                          inputType: TextInputType.text,
-                        ),
                         SizedBox(height: 27.h),
                         Text(
                           'Booking Date',

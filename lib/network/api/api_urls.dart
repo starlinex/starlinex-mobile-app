@@ -14,5 +14,9 @@ class ApiUrls {
   static const searchShipmentItem = 'hsnDetails/search?keyWord';
   static const storeAirwayInfo = 'airWay/storeAirWayBill';
   static const bookingHistory = 'airWay/getAllData';
+  static String sendMail(String userId,String branchId) => 'mail/sendMail/$userId/$branchId';
+  static String getAddresses(String userId,String value) => 'airWay/getSenderRecvierAdd/$userId?searchPara=$value';
+  static const branchList = 'branch/getAllData';
+
 
 }
